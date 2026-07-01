@@ -28,10 +28,11 @@ Format a Markdown file in place:
 mk fmt path/to/file.md
 ```
 
-Choose the output style with `--math-block-type` (`dollar` by default):
+Choose the output style with `--math-block-type` / `-m`
+(`dollar` by default):
 
 ```sh
-mk fmt path/to/file.md --math-block-type code-block
+mk fmt path/to/file.md -m code-block
 ```
 
 Print the result instead of writing to the file with `--no-write`:
@@ -42,11 +43,11 @@ mk fmt path/to/file.md --no-write
 
 ### Options
 
-| Option              | Values                | Default  | Description                             |
-| ------------------- | --------------------- | -------- | --------------------------------------- |
-| `--math-block-type` | `dollar`, `code-block`| `dollar` | Output style for math blocks.           |
-| `--write`           | flag                  | `True`   | Write the result back to the file.      |
-| `--no-write`        | flag                  | –        | Print the result instead of writing it. |
+| Option                   | Values                | Default  | Description                             |
+| ------------------------ | --------------------- | -------- | --------------------------------------- |
+| `--math-block-type`, `-m`| `dollar`, `code-block`| `dollar` | Output style for math blocks.           |
+| `--write`                | flag                  | `True`   | Write the result back to the file.      |
+| `--no-write`             | flag                  | –        | Print the result instead of writing it. |
 
 ## 📄 License
 

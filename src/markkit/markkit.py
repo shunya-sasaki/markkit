@@ -25,7 +25,8 @@ class Markkit:
         self,
         file_path: Annotated[str, Argument(help="Target file path")],
         math_block_type: Annotated[
-            Literal["dollar", "code-block"], Option(help="Math block type")
+            Literal["dollar", "code-block"],
+            Option("--math-block-type", "-m", help="Math block type"),
         ] = "dollar",
         write: Annotated[
             bool,
