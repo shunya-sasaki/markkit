@@ -1,4 +1,4 @@
-"""markkit."""
+"""Format math blocks in markdown files."""
 
 from markkit.run import run
 

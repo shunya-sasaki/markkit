@@ -1,32 +1,44 @@
-"""Define _MathBlock."""
+"""Build the lines of a single math block."""
 
 from typing import Literal
 
 
 class _MathBlock:
+    """Collect a math block's lines in one output style."""
+
     def __init__(self, math_block_type: Literal["dollar", "code-block"]):
+        """Start an empty block of the given style.
+
+        Args:
+            math_block_type: Output style, ``dollar`` or ``code-block``.
+        """
         self.contents = []
         self.math_block_type = math_block_type
         self.n_indent_spaces = 0
 
     def _n_line_top_spaces(self, line: str) -> int:
-        """Return the number of spaces at the top of the line.
+        """Count the leading spaces of the line.
 
         Args:
-            line: A single line of the markdown file.
+            line: A single line.
 
         Returns:
-            The count of leading space characters.
+            The number of leading spaces.
 
         Examples:
-            >>> Markkit()._n_line_top_spaces("  $$")
+            >>> _MathBlock("dollar")._n_line_top_spaces("  $$")
             2
-            >>> Markkit()._n_line_top_spaces("   $$")
+            >>> _MathBlock("dollar")._n_line_top_spaces("   $$")
             3
         """
         return len(line) - len(line.lstrip(" "))
 
     def add_block_begin(self, begin_line: str) -> None:
+        """Add the opening marker, keeping the line's indent.
+
+        Args:
+            begin_line: The line that opens the block.
+        """
         self.n_indent_spaces = self._n_line_top_spaces(begin_line)
         match self.math_block_type:
             case "dollar":
@@ -35,6 +47,7 @@ class _MathBlock:
                 self.contents.append(" " * self.n_indent_spaces + "```math")
 
     def add_block_end(self) -> None:
+        """Add the closing marker with the same indent."""
         match self.math_block_type:
             case "dollar":
                 self.contents.append(" " * self.n_indent_spaces + "$$")
@@ -42,7 +55,13 @@ class _MathBlock:
                 self.contents.append(" " * self.n_indent_spaces + "```")
 
     def add_block_content(self, line: str) -> None:
+        """Add one content line, dropping trailing spaces.
+
+        Args:
+            line: A line inside the block.
+        """
         self.contents.append(line.rstrip())
 
     def dump(self) -> str:
+        """Return the block as a single newline-joined string."""
         return "\n".join(self.contents)

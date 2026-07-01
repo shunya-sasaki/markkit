@@ -1,6 +1,6 @@
 [project]
 name = "markkit"
-description = "Utility tool box for Markdown"
+description = "A formatter for math blocks in Markdown files"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = ["pydantic", "typer"]

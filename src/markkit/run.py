@@ -1,4 +1,4 @@
-"""markkit."""
+"""Format math blocks in a markdown file."""
 
 import re
 from pathlib import Path
@@ -13,10 +13,10 @@ from markkit._math_block import _MathBlock
 
 
 class Markkit:
-    """Markkit."""
+    """Reformat the math blocks of a markdown file."""
 
     def __init__(self):
-        """Initlaizer of Markkit."""
+        """Set up the CLI app and block state."""
         self.app = Typer()
         self.app.command("fmt")(self.fmt)
         self._is_in_math_block = False
@@ -34,7 +34,13 @@ class Markkit:
             ),
         ] = True,
     ):
-        """Format a markdown file."""
+        """Rewrite each math block in the file to one style.
+
+        Args:
+            file_path: Path to the markdown file to format.
+            math_block_type: Output style, ``dollar`` or ``code-block``.
+            write: Save the result to the file, or print it if False.
+        """
         target_filepath = Path(file_path)
         if not target_filepath.exists():
             raise FileNotFoundError()
@@ -62,18 +68,17 @@ class Markkit:
             print(output)
 
     def _is_math_block_begin(self, line: str) -> bool:
-        """Return whether the line begins a math block.
+        """Tell whether the line opens a math block.
 
-        Leading whitespace at the top of the line is ignored so that
-        indented code-fence (```` ```math ````, ```` ````math ````, ...)
-        or ``$$`` markers are detected. Any fence with three or more
-        backticks followed by ``math`` is recognized.
+        Indent is ignored. An opener is ``$$`` or a fence of three or
+        more backticks followed by ``math`` (```` ```math ````,
+        ```` ````math ````, ...).
 
         Args:
-            line: A single line of the markdown file.
+            line: A single line.
 
         Returns:
-            True if the line starts a math block, otherwise False.
+            True if the line opens a math block.
         """
         if self._is_in_math_block:
             return False
@@ -83,18 +88,17 @@ class Markkit:
         ) is not None or stripped.startswith("$$")
 
     def _is_math_block_end(self, line: str) -> bool:
-        """Return whether the line ends a math block.
+        """Tell whether the line closes a math block.
 
-        Leading whitespace at the top of the line is ignored so that
-        indented closing code-fence (```` ``` ````, ```` ```` ````, ...)
-        or ``$$`` markers are detected. A closing fence is three or more
-        backticks with no trailing ``math`` marker.
+        Indent is ignored. A closer is ``$$`` or a bare fence of three
+        or more backticks (```` ``` ````, ```` ```` ````, ...) with no
+        ``math`` marker.
 
         Args:
-            line: A single line of the markdown file.
+            line: A single line.
 
         Returns:
-            True if the line ends a math block, otherwise False.
+            True if the line closes a math block.
         """
         if not self._is_in_math_block:
             return False
@@ -103,7 +107,7 @@ class Markkit:
 
 
 def run():
-    """CLI entry point of markkit."""
+    """Start the markkit CLI."""
     markkit = Markkit()
     markkit.app()
 
