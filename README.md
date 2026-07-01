@@ -3,8 +3,8 @@
 A formatter for math blocks in Markdown files.
 
 `markkit` rewrites every math block in a Markdown file to a single,
-consistent style: either `$$` dollar blocks or ` ```math ` code blocks.
-Indentation of each block is preserved.
+consistent style: `$$` dollar blocks, ` ```math ` code blocks, or
+`\\[` mdBook blocks. Indentation of each block is preserved.
 
 ## 📦 Requirements
 
@@ -43,11 +43,11 @@ mk fmt path/to/file.md --no-write
 
 ### Options
 
-| Option                   | Values                | Default  | Description                             |
-| ------------------------ | --------------------- | -------- | --------------------------------------- |
-| `--math-block-type`, `-m`| `dollar`, `code-block`| `dollar` | Output style for math blocks.           |
-| `--write`                | flag                  | `True`   | Write the result back to the file.      |
-| `--no-write`             | flag                  | –        | Print the result instead of writing it. |
+| Option                   | Values                          | Default  | Description                             |
+| ------------------------ | ------------------------------- | -------- | --------------------------------------- |
+| `--math-block-type`, `-m`| `dollar`, `code-block`, `mdbook`| `dollar` | Output style for math blocks.           |
+| `--write`                | flag                            | `True`   | Write the result back to the file.      |
+| `--no-write`             | flag                            | –        | Print the result instead of writing it. |
 
 ## 📄 License
 

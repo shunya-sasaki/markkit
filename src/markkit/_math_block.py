@@ -6,11 +6,14 @@ from typing import Literal
 class _MathBlock:
     """Collect a math block's lines in one output style."""
 
-    def __init__(self, math_block_type: Literal["dollar", "code-block"]):
+    def __init__(
+        self, math_block_type: Literal["dollar", "code-block", "mdbook"]
+    ):
         """Start an empty block of the given style.
 
         Args:
-            math_block_type: Output style, ``dollar`` or ``code-block``.
+            math_block_type: Output style, ``dollar``, ``code-block`` or
+                ``mdbook``.
         """
         self.contents = []
         self.math_block_type = math_block_type
@@ -45,6 +48,8 @@ class _MathBlock:
                 self.contents.append(" " * self.n_indent_spaces + "$$")
             case "code-block":
                 self.contents.append(" " * self.n_indent_spaces + "```math")
+            case "mdbook":
+                self.contents.append(" " * self.n_indent_spaces + "\\\\[")
 
     def add_block_end(self) -> None:
         """Add the closing marker with the same indent."""
@@ -53,6 +58,8 @@ class _MathBlock:
                 self.contents.append(" " * self.n_indent_spaces + "$$")
             case "code-block":
                 self.contents.append(" " * self.n_indent_spaces + "```")
+            case "mdbook":
+                self.contents.append(" " * self.n_indent_spaces + "\\\\]")
 
     def add_block_content(self, line: str) -> None:
         """Add one content line, dropping trailing spaces.

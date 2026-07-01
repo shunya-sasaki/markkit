@@ -25,7 +25,7 @@ class Markkit:
         self,
         file_path: Annotated[str, Argument(help="Target file path")],
         math_block_type: Annotated[
-            Literal["dollar", "code-block"],
+            Literal["dollar", "code-block", "mdbook"],
             Option("--math-block-type", "-m", help="Math block type"),
         ] = "dollar",
         write: Annotated[
@@ -39,7 +39,8 @@ class Markkit:
 
         Args:
             file_path: Path to the markdown file to format.
-            math_block_type: Output style, ``dollar`` or ``code-block``.
+            math_block_type: Output style, ``dollar``, ``code-block``
+                or ``mdbook``.
             write: Save the result to the file, or print it if False.
         """
         target_filepath = Path(file_path)
@@ -69,11 +70,11 @@ class Markkit:
             print(output)
 
     def _is_math_block_begin(self, line: str) -> bool:
-        """Tell whether the line opens a math block.
+        r"""Tell whether the line opens a math block.
 
-        Indent is ignored. An opener is ``$$`` or a fence of three or
-        more backticks followed by ``math`` (```` ```math ````,
-        ```` ````math ````, ...).
+        Indent is ignored. An opener is ``$$``, the mdBook ``\\\\[``
+        marker, or a fence of three or more backticks followed by
+        ``math`` (```` ```math ````, ```` ````math ````, ...).
 
         Args:
             line: A single line.
@@ -84,16 +85,18 @@ class Markkit:
         if self._is_in_math_block:
             return False
         stripped = line.lstrip()
-        return re.match(
-            r"`{3,}math", stripped
-        ) is not None or stripped.startswith("$$")
+        return (
+            re.match(r"`{3,}math", stripped) is not None
+            or stripped.startswith("$$")
+            or stripped.startswith("\\\\[")
+        )
 
     def _is_math_block_end(self, line: str) -> bool:
-        """Tell whether the line closes a math block.
+        r"""Tell whether the line closes a math block.
 
-        Indent is ignored. A closer is ``$$`` or a bare fence of three
-        or more backticks (```` ``` ````, ```` ```` ````, ...) with no
-        ``math`` marker.
+        Indent is ignored. A closer is ``$$``, the mdBook ``\\\\]``
+        marker, or a bare fence of three or more backticks
+        (```` ``` ````, ```` ```` ````, ...) with no ``math`` marker.
 
         Args:
             line: A single line.
@@ -104,4 +107,8 @@ class Markkit:
         if not self._is_in_math_block:
             return False
         stripped = line.strip()
-        return re.match(r"`{3,}$", stripped) is not None or stripped == "$$"
+        return (
+            re.match(r"`{3,}$", stripped) is not None
+            or stripped == "$$"
+            or stripped == "\\\\]"
+        )
