@@ -17,8 +17,8 @@ class Markkit:
 
     def __init__(self):
         """Set up the CLI app and block state."""
-        self.app = Typer()
-        self.app.command("fmt")(self.fmt)
+        self.app = Typer(no_args_is_help=True)
+        self.app.command(name="fmt")(self.fmt)
         self._is_in_math_block = False
 
     def fmt(
