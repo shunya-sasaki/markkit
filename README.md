@@ -52,5 +52,5 @@ mk fmt path/to/file.md --no-write
 
 MIT License
 
-See [LICENSE] for the detail.
+See [LICENSE](./LICENSE) for the detail.
 
