@@ -18,8 +18,12 @@ class Markkit:
     def __init__(self):
         """Set up the CLI app and block state."""
         self.app = Typer(no_args_is_help=True)
+        self.app.callback()(self._main)
         self.app.command(name="fmt")(self.fmt)
         self._is_in_math_block = False
+
+    def _main(self) -> None:
+        """Format math blocks in Markdown files."""
 
     def fmt(
         self,
