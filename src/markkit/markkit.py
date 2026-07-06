@@ -1,6 +1,7 @@
 """Define the Markkit CLI application."""
 
 import re
+from os import execlpe
 from pathlib import Path
 from typing import Annotated
 from typing import Literal
@@ -50,7 +51,10 @@ class Markkit:
         target_filepath = Path(file_path)
         if not target_filepath.exists():
             raise FileNotFoundError()
-        lines = target_filepath.read_text().splitlines()
+        try:
+            lines = target_filepath.read_text().splitlines()
+        except UnicodeDecodeError:
+            lines = target_filepath.read_text(encoding="utf-8").splitlines()
         contents = []
         for line in lines:
             if self._is_math_block_begin(line):
