@@ -1,7 +1,6 @@
 """Define the Markkit CLI application."""
 
 import re
-from os import execlpe
 from pathlib import Path
 from typing import Annotated
 from typing import Literal
